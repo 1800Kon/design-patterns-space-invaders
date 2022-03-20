@@ -1,0 +1,3 @@
+class ShipDecorator extends Ship {
+    
+}
