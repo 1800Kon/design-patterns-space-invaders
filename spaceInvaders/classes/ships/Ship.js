@@ -5,7 +5,7 @@ class Ship {
     this.hitboxSize = hitboxSize;
     this.sprite = sprite;
   }
-  
+
   display() {
     push();
     imageMode(CENTER);
@@ -15,30 +15,22 @@ class Ship {
   }
 
   // check the position of the ship relative to the walls to know when to change direction and go down a level
-  checkShipPosition() {
-    if (this.position.x < 100) {
-      return true;
+
+  specialMovement() {
+    if (this.position.x < 15) {
+      this.velocity.set(1, 0, 0);
+      this.yLevelChange();
     } else {
-      if (this.position.x > 1000) {
-        return true;
-      } else {
-        return false;
+      if (this.position.x > 985) {
+        this.velocity.set(-1, 0, 0);
+        this.yLevelChange();
       }
     }
   }
 
-  xDirectionChange() {
-    if (this.checkShipPosition) {
-      this.velocity.x *= -1;
-    }
-  }
-
   yLevelChange() {
-    if (this.checkShipPosition) {
-      // Look for the correct value in this <><><><><><><><><><><><><><><>
-      let amountToGoDown = 20;
-      this.position.y = this.position.y - amountToGoDown;
-    }
+    let amountToGoDown = 50;
+    this.position.y += amountToGoDown;
   }
 
   collisionDetection(collidedWith) {

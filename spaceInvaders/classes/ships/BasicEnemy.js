@@ -1,4 +1,4 @@
-class BasicEnemy extends Ship{
+class BasicEnemy extends Ship {
     constructor(position, velocity, hitboxSize, sprite) {
         super(position, velocity, hitboxSize, sprite);
     }
@@ -9,6 +9,7 @@ class BasicEnemy extends Ship{
 
     movementUpdate() {
         this.position.add(this.velocity);
+        this.specialMovement();
     }
 
 }
