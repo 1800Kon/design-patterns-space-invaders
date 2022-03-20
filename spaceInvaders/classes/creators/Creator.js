@@ -37,10 +37,11 @@ class Creator {
             "../../../spaceInvaders/assets/sprites/PNG/Default_size/Ship_parts/cannonBall.png"
           )
         );
+        bullet.friendly = true;
         return bullet;
       case "enemy":
         //Makes the bullet travel down from the position of the enemy
-        return new Bullet(
+        let bulletEnemy =  new Bullet(
           createVector(
             originatorObject.position.x,
             originatorObject.position.y
@@ -50,6 +51,8 @@ class Creator {
             "../../../spaceInvaders/assets/sprites/PNG/Default_size/Ship_parts/cannonBall.png"
           )
         );
+        bulletEnemy.friendly = false;
+        return bulletEnemy;
     }
   }
 }

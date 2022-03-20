@@ -3,6 +3,7 @@ class Bullet {
     this.position = position;
     this.velocity = velocity;
     this.dead = false;
+    this.friendly = false;
     this.sprite = sprite;
     this.hitboxSize = createVector(10, 10);
   }

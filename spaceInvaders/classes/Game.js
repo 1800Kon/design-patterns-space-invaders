@@ -17,7 +17,7 @@ class Game {
       for (let i = 0; i < 9; i++) {
         enemy = this.creator.createShip("enemy");
         enemy.position.x += i * 50;
-        enemy.position.y +=  j * 60;
+        enemy.position.y += j * 60;
         this.enemies.push(enemy);
       }
     }
@@ -34,6 +34,20 @@ class Game {
     this.enemies.forEach((enemy) => {
       enemy.display();
       enemy.movementUpdate();
+      this.bullets.forEach((bullet) => {
+        if (enemy.collisionDetection(bullet)) {
+          this.enemies.splice(this.enemies.indexOf(enemy), 1);
+          this.bullets.splice(this.bullets.indexOf(bullet), 1);
+        }
+      });
+      let random = Math.random();
+      let shootingRate = 0.001;
+      if (this.enemies.length < 10) {
+        shootingRate = 0.01;
+      }
+      if (random < shootingRate) {
+        this.bullets.push(enemy.shoot());
+      }
     });
   }
 

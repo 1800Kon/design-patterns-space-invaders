@@ -34,7 +34,10 @@ class Ship {
   }
 
   collisionDetection(collidedWith) {
-    return this.position.dist(collidedWith) < collidedWith.hitboxSize.x / 2;
+    return (
+      this.position.dist(collidedWith.position) <
+      collidedWith.hitboxSize.x / 2 + 5 && collidedWith.friendly === false
+    );
   }
 
   update() {
