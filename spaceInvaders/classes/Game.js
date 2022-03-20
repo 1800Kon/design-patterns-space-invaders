@@ -1,15 +1,14 @@
 class Game {
   // Load all the game assets in here
-  preload() {}
   constructor() {}
 
   // Add more things which need to be initialized
   init() {
     this.enemies = [];
     this.bullets = [];
-    this.creator = new this.creator();
+    this.creator = new Creator();
     this.player = this.creator.createShip("player");
-    this.boss = this.creator.createShip("boss");
+    //this.boss = this.creator.createShip("boss");
   }
 
   display() {
@@ -21,5 +20,17 @@ class Game {
     this.enemies.forEach(enemy => {
       enemy.movementUpdate();
     });
+  }
+
+  playerLogic() {
+
+  }
+
+  bulletLogic() {
+    
+  }
+
+  frameUpdate() {
+    this.display();
   }
 }

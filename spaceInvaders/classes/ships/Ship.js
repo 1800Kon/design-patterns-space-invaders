@@ -5,6 +5,7 @@ class Ship {
     this.hitboxSize = hitboxSize;
     this.sprite = sprite;
   }
+  
   display() {
     push();
     imageMode(CENTER);

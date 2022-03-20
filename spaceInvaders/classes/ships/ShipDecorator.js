@@ -1,3 +1,5 @@
-class ShipDecorator extends Ship {
-    
+class ShipDecorator {
+    constructor(ship) {
+        this.ship = ship;
+    }
 }
