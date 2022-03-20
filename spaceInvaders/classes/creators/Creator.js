@@ -9,10 +9,12 @@ class Creator {
         return new Boss();
     }
   }
-
-  // Fill the bullet options with the correct values
-  createBullet() {
-    return new Bullet();
+  createBullet(originator) {
+    switch (originator) {
+      case "player":
+        return;
+      case "enemy":
+        return;
+    }
   }
-
 }
