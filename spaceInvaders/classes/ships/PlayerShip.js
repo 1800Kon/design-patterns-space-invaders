@@ -1,9 +1,6 @@
 class PlayerShip extends Ship {
-  constructor(position) {
-    super(position);
-  }
-  preload() {
-    this.sprite = loadImage("assets/sprites/PNG/Ships/");
+  constructor(position, velocity, hitboxSize, sprite) {
+    super(position, velocity, hitboxSize, sprite);
   }
 
   movement() {
@@ -17,8 +14,6 @@ class PlayerShip extends Ship {
 
   shoot() {
     let creator = new Creator();
-    if (keyIsDown(32)) {
-        creator.createBullet("player", this);
-    }
+    return creator.createBullet("player", this);
   }
 }

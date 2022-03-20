@@ -14,20 +14,42 @@ class Game {
   display() {
     this.player.movement();
     this.player.display();
+    this.bulletLogic();
   }
 
+
   enemyLogic() {
-    this.enemies.forEach(enemy => {
+    this.enemies.forEach((enemy) => {
       enemy.movementUpdate();
     });
   }
 
-  playerLogic() {
-
+  shootBullet() {
+    let bullet = this.player.shoot();
+    if(bullet != null) {
+      this.bullets.push(bullet);
+    }
   }
 
-  bulletLogic() {
-    
+  bulletLogic() {    
+    // Removes any dead bullets from the list
+    // REPLACE THIS WITH A STATE FOR THE BULLET, SAME HOW THE BOSS HAS STATES
+    this.bullets.forEach((bullet) => {
+      if (
+        bullet.position.y > 800 ||
+        bullet.position.y < 0 ||
+        bullet.position.x < 0 ||
+        bullet.position.x > 1000
+      ) {
+        bullet.dead == true;
+      }
+        if (bullet.dead == true) {
+          this.bullets.splice(this.bullets.indexOf(bullet), 1);
+        } else {
+          bullet.display();
+          bullet.update();
+        }
+    });
   }
 
   frameUpdate() {
