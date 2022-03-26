@@ -1,6 +1,7 @@
 class BasicEnemy extends Ship {
   constructor(position, velocity, hitboxSize, sprite) {
     super(position, velocity, hitboxSize, sprite);
+    this.boss = false;
   }
 
   shoot() {
@@ -11,7 +12,7 @@ class BasicEnemy extends Ship {
   collisionDetection(collidedWith) {
     return (
       this.position.dist(collidedWith.position) <
-        collidedWith.hitboxSize.x / 2 + 5 && collidedWith.friendly === true
+        collidedWith.hitboxSize.x + this.hitboxSize.x / 2 && collidedWith.friendly === true
     );
   }
 

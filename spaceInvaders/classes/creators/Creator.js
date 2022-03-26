@@ -14,13 +14,20 @@ class Creator {
         return new BasicEnemy(
           createVector(200, 200),
           createVector(1, 0),
-          createVector(30, 30),
+          createVector(50, 50),
           loadImage(
             "../../../spaceInvaders/assets/sprites/PNG/Default_size/Ships/playerShip.png"
           )
         );
       case "boss":
-        return new Boss();
+        return new Boss(
+          createVector(200, 200),
+          createVector(1, 0),
+          createVector(100, 100),
+          loadImage(
+            "../../../spaceInvaders/assets/sprites/PNG/Default_size/Ships/shipBoss.png"
+          )
+        );
     }
   }
   createBullet(originator, originatorObject) {
@@ -41,7 +48,7 @@ class Creator {
         return bullet;
       case "enemy":
         //Makes the bullet travel down from the position of the enemy
-        let bulletEnemy =  new Bullet(
+        let bulletEnemy = new Bullet(
           createVector(
             originatorObject.position.x,
             originatorObject.position.y

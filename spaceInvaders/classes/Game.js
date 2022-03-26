@@ -1,14 +1,15 @@
 class Game {
   // Load all the game assets in here
   constructor() {}
-
   // Add more things which need to be initialized
   init() {
     this.enemies = [];
     this.bullets = [];
     this.creator = new Creator();
     this.player = this.creator.createShip("player");
+    this.boss = this.creator.createShip("boss");
     this.generateEnemyGroup();
+    let bossPushed = false;
   }
 
   generateEnemyGroup() {
@@ -31,13 +32,29 @@ class Game {
   }
 
   enemyLogic() {
+    if (!this.bossPushed && this.enemies.length == 0) {
+      this.enemies.push(this.boss);
+      this.bossPushed = true;
+    }
     this.enemies.forEach((enemy) => {
       enemy.display();
       enemy.movementUpdate();
+      if (this.bossPushed) {
+        this.boss.display();
+        this.boss.movementUpdate();
+      }
       this.bullets.forEach((bullet) => {
         if (enemy.collisionDetection(bullet)) {
-          this.enemies.splice(this.enemies.indexOf(enemy), 1);
-          this.bullets.splice(this.bullets.indexOf(bullet), 1);
+          if (enemy.boss == true) {
+            enemy.hp -= 2;
+            this.bullets.splice(this.bullets.indexOf(bullet), 1);
+            if (enemy.hp <= 0) {
+              this.enemies.splice(this.enemies.indexOf(enemy), 1);
+            }
+          } else {
+            this.enemies.splice(this.enemies.indexOf(enemy), 1);
+            this.bullets.splice(this.bullets.indexOf(bullet), 1);
+          }
         }
       });
       let random = Math.random();
