@@ -5,10 +5,16 @@ class Game {
   init() {
     this.enemies = [];
     this.bullets = [];
-    this.creator = new Creator();
-    this.player = this.creator.createShip("player");
-    this.boss = this.creator.createShip("boss");
+
+    this.playerShipCreator = new PlayerShipCreator();
+    this.enemyCreator = new EnemyCreator();
+    this.bossCreator = new BossCreator();
+    this.bulletCreator = new BulletCreator();
+
+    this.player = this.playerShipCreator.create();
+    this.boss = this.bossCreator.create();
     this.generateEnemyGroup();
+
     let bossPushed = false;
   }
 
@@ -16,7 +22,7 @@ class Game {
     let enemy;
     for (let j = 0; j < 4; j++) {
       for (let i = 0; i < 9; i++) {
-        enemy = this.creator.createShip("enemy");
+        enemy = this.enemyCreator.create();
         enemy.position.x += i * 50;
         enemy.position.y += j * 60;
         this.enemies.push(enemy);

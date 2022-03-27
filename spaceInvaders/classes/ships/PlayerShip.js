@@ -13,7 +13,7 @@ class PlayerShip extends Ship {
   }
 
   shoot() {
-    let creator = new Creator();
-    return creator.createBullet("player", this);
+    let creator = new BulletCreator();
+    return creator.create("player", this);
   }
 }

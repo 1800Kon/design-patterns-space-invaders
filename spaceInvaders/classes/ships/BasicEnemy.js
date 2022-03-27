@@ -5,8 +5,8 @@ class BasicEnemy extends Ship {
   }
 
   shoot() {
-    let creator = new Creator();
-    return creator.createBullet("enemy", this);
+    let creator = new BulletCreator();
+    return creator.create("enemy", this);
   }
 
   collisionDetection(collidedWith) {
