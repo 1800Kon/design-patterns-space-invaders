@@ -16,7 +16,8 @@ class Ship {
 
   // check the position of the ship relative to the walls to know when to change direction and go down a level
 
-  specialMovement() {
+  specialMovement() 
+  {
     if (this.position.x < 15) {
       this.velocity.set(1, 0, 0);
       this.yLevelChange();

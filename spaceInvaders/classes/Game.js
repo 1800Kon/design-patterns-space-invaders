@@ -13,6 +13,7 @@ class Game {
 
     this.player = this.playerShipCreator.create();
     this.boss = this.bossCreator.create();
+
     this.generateEnemyGroup();
 
     let bossPushed = false;
@@ -20,8 +21,8 @@ class Game {
 
   generateEnemyGroup() {
     let enemy;
-    for (let j = 0; j < 4; j++) {
-      for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 1; j++) {
+      for (let i = 0; i < 1; i++) {
         enemy = this.enemyCreator.create();
         enemy.position.x += i * 50;
         enemy.position.y += j * 60;
@@ -38,22 +39,32 @@ class Game {
   }
 
   enemyLogic() {
+    //Check if normal enemy is still alive, if not spawn boss
     if (!this.bossPushed && this.enemies.length == 0) {
       this.enemies.push(this.boss);
       this.bossPushed = true;
     }
+
+    //loop and spawn, give movement to normal enemies
     this.enemies.forEach((enemy) => {
       enemy.display();
       enemy.movementUpdate();
+
+      //if boss spawned, give movement to boss
       if (this.bossPushed) {
         this.boss.display();
         this.boss.movementUpdate();
       }
+
+      //bullet collisionDetection
       this.bullets.forEach((bullet) => {
         if (enemy.collisionDetection(bullet)) {
+          //if bullet hit boss
           if (enemy.boss == true) {
             enemy.hp -= 2;
             this.bullets.splice(this.bullets.indexOf(bullet), 1);
+
+            //if enemy hp ded, remove enemy
             if (enemy.hp <= 0) {
               this.enemies.splice(this.enemies.indexOf(enemy), 1);
             }
@@ -63,13 +74,31 @@ class Game {
           }
         }
       });
+
       let random = Math.random();
       let shootingRate = 0.001;
+
       if (this.enemies.length < 10) {
         shootingRate = 0.01;
       }
+
+      // shooting logic for the enemies
       if (random < shootingRate) {
         this.bullets.push(enemy.shoot());
+
+        // if the enemy is the boss it will trigger the snashot machine chance
+         if (enemy.boss) {
+          let random = Math.random();
+          let trigger = 1;
+          if (random < trigger && enemy.snapshotCreated == false)
+          {
+            //create the snapshot for the revival
+            let restore = new Command(enemy.position, enemy.velocity, enemy.hitboxSize, enemy.sprite, enemy.hp, enemy);
+            enemy.snapshotCreated = true;
+            restore.execute();
+            restore.unexecute();            
+          }
+         }
       }
     });
   }
@@ -104,5 +133,9 @@ class Game {
 
   frameUpdate() {
     this.display();
+  }
+
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
