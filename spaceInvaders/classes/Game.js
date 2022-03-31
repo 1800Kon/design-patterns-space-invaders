@@ -21,7 +21,9 @@ class Game {
 
     this.stateChangedtoAngryState = false;
     this.stateChangedtoCrazyState = false;
-    this.command;
+
+    this.decoratedSpeedBoss = false;
+    this.decoratedMachineGunBoss = false;
   }
 
   generateEnemyGroup() {
@@ -60,36 +62,49 @@ class Game {
         this.boss.display();
         this.boss.movementUpdate();
       }
-      // this is the snapshot for the revival
+
       if (enemy.boss) {
+        // this is the snapshot for the revival
+        // 50% chance that boss will be taken snapshot when exist
         let random = Math.random();
         let trigger = 1;
         if (random < trigger && this.snapshotCreated == false) {
           enemy.createSnapshot();
           this.snapshotCreated = true;
         }
-        //restore the snapshot base on HP
+        //restore the snapshot once base on HP
         if (
-          enemy.hp <=8 &&
+          enemy.hp <= 80 &&
           this.snapshotCreated == true &&
           this.snapshotRestored == false
         ) {
           enemy.restoreSnapshot();
           this.snapshotRestored = true;
         }
-        
+
         // Changing state base on HP
-        if (enemy.hp <= 6 && this.stateChangedtoAngryState == false) {
+        if (enemy.hp <= 60 && this.stateChangedtoAngryState == false) {
           enemy.changeStateToAngry();
           this.stateChangedtoAngryState = true;
         }
 
-        if (enemy.hp <= 4 && this.stateChangedtoCrazyState == false) {
+        if (enemy.hp <= 40 && this.stateChangedtoCrazyState == false) {
           enemy.changeStateToCrazy();
           this.stateChangedtoCrazyState = true;
         }
 
-
+        if (20 <= enemy.hp <= 30 && this.decoratedSpeedBoss == false) {
+          this.boss = new SpeedyBossDecorator(
+            this.boss.position,
+            this.boss.velocity,
+            this.boss.hitboxSize,
+            this.boss.sprite,
+            this.boss.hp,
+            this.boss
+          );
+          this.boss.specialMovement();
+          this.decoratedSpeedBoss = true;
+        }
       }
       //bullet collisionDetection
       this.bullets.forEach((bullet) => {
@@ -116,11 +131,27 @@ class Game {
       if (this.enemies.length < 10) {
         shootingRate = 0.01;
       }
+
+      if (enemy.boss) {
+        if (enemy.hp <= 20 && this.decoratedMachineGunBoss == false) {
+          this.boss = new MachineGunBossDecorator(
+            this.boss.position,
+            this.boss.velocity,
+            this.boss.hitboxSize,
+            this.boss.sprite,
+            this.boss.hp,
+            this.boss,
+            this.bullets
+          );
+          this.boss.fastFire();
+          if (enemy.hp <= 4) {
+            this.decoratedMachineGunBoss = true;
+          }
+        }
+      }
       // shooting logic for the enemies
       if (random < shootingRate) {
         this.bullets.push(enemy.shoot());
-
-        // if the enemy is the boss it will trigger the snashot machine chance
       }
     });
   }

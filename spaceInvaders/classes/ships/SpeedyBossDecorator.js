@@ -1,18 +1,17 @@
 class SpeedyBossDecorator extends Boss {
-  constructor(bossToWrap) {
-    super();
+  constructor(position, velocity, hitboxSize, sprite, hp, bossToWrap) {
+    super(position, velocity, hitboxSize, sprite, hp);
     this.bossToWrap = bossToWrap;
-    this.bossToWrap.velocity = new Vector(2, 0);
   }
 
   specialMovement() {
-    if (this.position.x < 15) {
-      this.velocity.set(2, 0, 0);
-      this.yLevelChange();
+    if (this.bossToWrap.position.x < 15) {
+      this.bossToWrap.velocity.set(5, 0, 0);
+      this.bossToWrap.yLevelChange();
     } else {
-      if (this.position.x > 985) {
-        this.velocity.set(-2, 0, 0);
-        this.yLevelChange();
+      if (this.bossToWrap.position.x > 985) {
+        this.bossToWrap.velocity.set(-5, 0, 0);
+        this.bossToWrap.yLevelChange();
       }
     }
   }
