@@ -24,12 +24,14 @@ class Game {
 
     this.decoratedSpeedBoss = false;
     this.decoratedMachineGunBoss = false;
+
+    this.resetGame = true;
   }
 
   generateEnemyGroup() {
     let enemy;
-    for (let j = 0; j < 1; j++) {
-      for (let i = 0; i < 1; i++) {
+    for (let j = 0; j < 4; j++) {
+      for (let i = 0; i < 9; i++) {
         enemy = this.enemyCreator.create();
         enemy.position.x += i * 50;
         enemy.position.y += j * 60;
@@ -62,7 +64,11 @@ class Game {
         this.boss.display();
         this.boss.movementUpdate();
       }
-
+      if (
+        enemy.position.y > 600
+      ) {
+        this.player.hp = 0;
+      }
       if (enemy.boss) {
         // this is the snapshot for the revival
         // 50% chance that boss will be taken snapshot when exist
@@ -119,9 +125,22 @@ class Game {
               this.enemies.splice(this.enemies.indexOf(enemy), 1);
             }
           } else {
+            //clean bullets off screen
             this.enemies.splice(this.enemies.indexOf(enemy), 1);
             this.bullets.splice(this.bullets.indexOf(bullet), 1);
           }
+        }
+
+        //if bullet hit player
+
+        if (this.player.collisionDetection(bullet)) {
+          this.player.hp -= 1;
+          this.bullets.splice(this.bullets.indexOf(bullet), 1);
+        }
+        if (this.resetGame && this.player.hp <= 0) {
+          alert("You died! Click OK to restart the game.");
+          window.location.reload();
+          this.resetGame = false;
         }
       });
 
@@ -153,6 +172,7 @@ class Game {
       if (random < shootingRate) {
         this.bullets.push(enemy.shoot());
       }
+      
     });
   }
 
@@ -165,7 +185,6 @@ class Game {
 
   bulletLogic() {
     // Removes any dead bullets from the list
-    // REPLACE THIS WITH A STATE FOR THE BULLET, SAME HOW THE BOSS HAS STATES
     this.bullets.forEach((bullet) => {
       if (
         bullet.position.y > 800 ||
@@ -186,9 +205,5 @@ class Game {
 
   frameUpdate() {
     this.display();
-  }
-
-  sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

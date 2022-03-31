@@ -9,7 +9,7 @@ class PlayerShipCreator extends Creator {
         createVector(30, 30),
         loadImage(
           "../../../spaceInvaders/assets/sprites/PNG/Default_size/Ships/playerShip.png"
-        )
+        ),1
       );
   }
 }

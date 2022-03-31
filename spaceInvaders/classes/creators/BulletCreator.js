@@ -9,7 +9,7 @@ class BulletCreator extends Creator {
         let bullet = new Bullet(
           createVector(
             originatorObject.position.x,
-            originatorObject.position.y
+            originatorObject.position.y - 20
           ),
           createVector(0, -5),
           loadImage(
