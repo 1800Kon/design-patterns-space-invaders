@@ -9,7 +9,7 @@ class BossCreator extends Creator {
       createVector(100, 100),
       loadImage(
         "../../../spaceInvaders/assets/sprites/PNG/Default_size/Ships/shipBoss.png"
-      ), 100
+      ), 10
     );
   }
 }

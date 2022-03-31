@@ -15,8 +15,13 @@ class Game {
     this.boss = this.bossCreator.create();
 
     this.generateEnemyGroup();
+    this.snapshotCreated = false;
+    this.snapshotRestored = false;
+    this.bossPushed = false;
 
-    let bossPushed = false;
+    this.stateChangedtoAngryState = false;
+    this.stateChangedtoCrazyState = false;
+    this.command;
   }
 
   generateEnemyGroup() {
@@ -55,7 +60,37 @@ class Game {
         this.boss.display();
         this.boss.movementUpdate();
       }
+      // this is the snapshot for the revival
+      if (enemy.boss) {
+        let random = Math.random();
+        let trigger = 1;
+        if (random < trigger && this.snapshotCreated == false) {
+          enemy.createSnapshot();
+          this.snapshotCreated = true;
+        }
+        //restore the snapshot base on HP
+        if (
+          enemy.hp <=8 &&
+          this.snapshotCreated == true &&
+          this.snapshotRestored == false
+        ) {
+          enemy.restoreSnapshot();
+          this.snapshotRestored = true;
+        }
+        
+        // Changing state base on HP
+        if (enemy.hp <= 6 && this.stateChangedtoAngryState == false) {
+          enemy.changeStateToAngry();
+          this.stateChangedtoAngryState = true;
+        }
 
+        if (enemy.hp <= 4 && this.stateChangedtoCrazyState == false) {
+          enemy.changeStateToCrazy();
+          this.stateChangedtoCrazyState = true;
+        }
+
+
+      }
       //bullet collisionDetection
       this.bullets.forEach((bullet) => {
         if (enemy.collisionDetection(bullet)) {
@@ -81,24 +116,11 @@ class Game {
       if (this.enemies.length < 10) {
         shootingRate = 0.01;
       }
-
       // shooting logic for the enemies
       if (random < shootingRate) {
         this.bullets.push(enemy.shoot());
 
         // if the enemy is the boss it will trigger the snashot machine chance
-         if (enemy.boss) {
-          let random = Math.random();
-          let trigger = 1;
-          if (random < trigger && enemy.snapshotCreated == false)
-          {
-            //create the snapshot for the revival
-            let restore = new Command(enemy.position, enemy.velocity, enemy.hitboxSize, enemy.sprite, enemy.hp, enemy);
-            enemy.snapshotCreated = true;
-            restore.execute();
-            restore.unexecute();            
-          }
-         }
       }
     });
   }

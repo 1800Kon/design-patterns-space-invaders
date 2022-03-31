@@ -3,9 +3,9 @@ class Boss extends Ship {
     super(position, velocity, hitboxSize, sprite);
     this.hp = hp;
     this.boss = true;
-    this.snapshotCreated = false;
-    // this.states = [new DefaultState(),new RevivedState(this) /*new AngryState(this)*/];
-    // this.currentState = this.states[0];
+    this.currentState = "default";
+    this.bossAngryFlag = false;
+    this.snapshot = null;
   }
 
   shoot() {
@@ -22,22 +22,52 @@ class Boss extends Ship {
   }
 
   movementUpdate() {
-    this.position.add(this.velocity);
-    this.specialMovement();
+    if (this.currentState == "default") {
+      this.position.add(this.velocity);
+      this.specialMovement();
+    } else {
+      if (this.bossAngryFlag) {
+        this.bossAngryFlag = false;
+      }
+      this.currentState.movementUpdate();
+    }
   }
-
-  // changeState() {
-  //   let currentIndex = this.states.findIndex(
-  //     (state) => state === this.currentState
-  //   );
-  //   this.currentState = this.states[currentIndex + 1];
-  //   // if (this.hp <= 0) {
-  //   //   this.currentState = this.states[currentIndex + 1];
-  //   // } else {
-  //   //   // This would be default state until it dies
-  //   //   this.currentState = this.states[0];
-  //   // }
-  // }
+  changeStateToAngry()
+  {
+    this.currentState = new AngryState(
+      this.position,
+      this.velocity,
+      this.hitboxSize,
+      this.sprite,
+      this.hp
+    );
+    this.currentState.movementUpdate();
+  }
+  changeStateToCrazy() {
+    this.currentState = new CrazyState(
+      this.position,
+      this.velocity,
+      this.hitboxSize,
+      this.sprite,
+      this.hp
+    );
+    this.currentState.movementUpdate();
+  }
+  //this creates a copy of the boss object and stores it in the snapshot
+  createSnapshot() {
+    this.snapshot = new SnapShot(
+      this,
+      this.position,
+      this.velocity,
+      this.hitboxSize,
+      this.sprite,
+      this.hp
+    );
+  }
+  //restores the boss object to the state of the snapshot
+  restoreSnapshot() {
+    this.snapshot.restore();
+  }
 
   getHp() {
     return this.hp;
@@ -77,23 +107,5 @@ class Boss extends Ship {
 
   setSprite(sprite) {
     this.sprite = sprite;
-  }
-
-  save() {
-    return new SnapShot(
-      this.position,
-      this.velocity,
-      this.hitboxSize,
-      this.sprite,
-      this.hp
-    );
-  }
-
-  restore(snapshot) {
-    this.hp = snapshot.getHp();
-    this.position = snapshot.getPosition();
-    this.velocity = snapshot.getVelocity();
-    this.hitboxSize = snapshot.getHitboxSize();
-    this.sprite = snapshot.getSprite();
   }
 }

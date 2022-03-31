@@ -1,14 +1,15 @@
 // In here the snapshot machine gets all the information from the boss
 class Command extends SnapShot {
-  constructor(position, velocity, hitboxSize, sprite, hp, boss) {
-    super(position, velocity, hitboxSize, sprite, hp);
-    this.boss = boss;
-    this.snapshot = null;
+  constructor(position, velocity, hitboxSize, sprite, hp) {
+    super(bossObject, position, velocity, hitboxSize, sprite, hp);
+    this.backup = backup;//
   }
   execute() {
-    this.snapshot = this.boss.save();
+    this.backup = this.bossObject.createSnapShot();
   }
-  unexecute() {
-    this.boss.restore(this.snapshot);
+  undo() {
+    if (this.backup != null) {
+      this.backup.restore();
+    }
   }
 }
