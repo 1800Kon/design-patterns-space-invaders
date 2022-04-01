@@ -71,7 +71,7 @@ class Game {
         // this is the snapshot for the revival
         // 50% chance that boss will be taken snapshot when exist
         let random = Math.random();
-        let trigger = 1;
+        let trigger = 0.5;
         if (random < trigger && this.snapshotCreated == false) {
           enemy.createSnapshot();
           this.snapshotCreated = true;

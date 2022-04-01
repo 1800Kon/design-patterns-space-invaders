@@ -1,6 +1,5 @@
 class SnapShot extends Boss {
   //This class store the past state of the Boss
-  //which can be restored using a memento object
   constructor(bossObject, position, velocity, hitboxSize, sprite, hp) {
     super(position, velocity, hitboxSize, sprite, hp);
     this.bossObject = bossObject; // pass the boss object to the snapshot

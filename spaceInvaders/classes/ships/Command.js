@@ -2,7 +2,7 @@
 class Command extends SnapShot {
   constructor(position, velocity, hitboxSize, sprite, hp) {
     super(bossObject, position, velocity, hitboxSize, sprite, hp);
-    this.backup = backup;//
+    this.backup = backup;
   }
   execute() {
     this.backup = this.bossObject.createSnapShot();
