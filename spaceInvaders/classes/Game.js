@@ -64,9 +64,7 @@ class Game {
         this.boss.display();
         this.boss.movementUpdate();
       }
-      if (
-        enemy.position.y > 600
-      ) {
+      if (enemy.position.y > 600) {
         this.player.hp = 0;
       }
       if (enemy.boss) {
@@ -121,8 +119,11 @@ class Game {
             this.bullets.splice(this.bullets.indexOf(bullet), 1);
 
             //if enemy hp ded, remove enemy
-            if (enemy.hp <= 0) {
+            if (this.resetGame && enemy.hp <= 0) {
               this.enemies.splice(this.enemies.indexOf(enemy), 1);
+              alert("YOU WON! Click OK to restart the game.");
+              window.location.reload();
+              this.resetGame = false;
             }
           } else {
             //clean bullets off screen
@@ -172,7 +173,6 @@ class Game {
       if (random < shootingRate) {
         this.bullets.push(enemy.shoot());
       }
-      
     });
   }
 
