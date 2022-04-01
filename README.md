@@ -7,7 +7,8 @@ Tung Do Xuan
 Sander Siimann
 
 ## Problem description
-The javascript web application uses 4 different kind of patterns:
+
+The javascript web application game 'Space Invader' uses 4 different kind of patterns:
 
 * Factory patter: 
   * This pattern will create enemies, player, boss and bullets.
