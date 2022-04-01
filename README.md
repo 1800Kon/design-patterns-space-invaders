@@ -33,4 +33,4 @@ The game uses a p5.js library.
 
 ## UML
 
-![](https://i.imgur.com/XbdlFRV.png))
+![](https://i.imgur.com/XbdlFRV.png)
